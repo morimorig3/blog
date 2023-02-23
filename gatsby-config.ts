@@ -1,4 +1,4 @@
-import type { GatsbyConfig } from "gatsby";
+import { GatsbyConfig } from "gatsby";
 
 require("dotenv").config({
   path: `.env.${process.env.NODE_ENV}`,
@@ -15,9 +15,20 @@ const config: GatsbyConfig = {
   graphqlTypegen: true,
   plugins: [
     {
+      resolve: "gatsby-source-graphql",
+      options: {
+        typeName: "BLOG",
+        fieldName: "blog",
+        url: `${process.env.GATSBY_HYGRAPH_END_POINT}`,
+        headers: {
+          Authorization: `${process.env.GATSBY_HYGRAPH_TOKEN}`,
+        },
+      },
+    },
+    {
       resolve: `gatsby-plugin-google-gtag`,
       options: {
-        trackingIds: [process.env.ANALYTICS_GA],
+        trackingIds: [process.env.GATSBY_ANALYTICS_GA],
         gtagConfig: {
           optimize_id: "OPT_CONTAINER_ID",
           anonymize_ip: true,
